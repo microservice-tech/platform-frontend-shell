@@ -65,10 +65,10 @@ export function NotificationProvider({
   const { token, authenticated } = useAuth()
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectAttemptsRef = useRef(0)
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const store = useNotificationStore()
-  const connectRef = useRef<() => void>()
+  const connectRef = useRef<(() => void) | undefined>(undefined)
 
   const connect = useCallback(() => {
     if (!websocketUrl || !token || !authenticated) {
