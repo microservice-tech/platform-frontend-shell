@@ -68,6 +68,7 @@ export function NotificationProvider({
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
 
   const store = useNotificationStore()
+  const connectRef = useRef<() => void>()
 
   const connect = useCallback(() => {
     if (!websocketUrl || !token || !authenticated) {
@@ -110,7 +111,7 @@ export function NotificationProvider({
         if (reconnectAttemptsRef.current < maxReconnectAttempts) {
           reconnectTimeoutRef.current = setTimeout(() => {
             reconnectAttemptsRef.current++
-            connect()
+            connectRef.current?.()
           }, reconnectInterval)
         }
       }
@@ -122,6 +123,9 @@ export function NotificationProvider({
       console.error('Failed to create WebSocket connection:', err)
     }
   }, [websocketUrl, token, authenticated, store, reconnectInterval, maxReconnectAttempts])
+
+  // Keep connectRef in sync with connect
+  connectRef.current = connect
 
   const disconnect = useCallback(() => {
     if (reconnectTimeoutRef.current) {
@@ -164,6 +168,7 @@ export function NotificationProvider({
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useNotifications(): NotificationContextType {
   const context = useContext(NotificationContext)
   if (!context) {

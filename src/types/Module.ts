@@ -1,5 +1,5 @@
 import type { RouteObject } from 'react-router-dom'
-import type { ComponentType, LazyExoticComponent } from 'react'
+import type { ComponentType } from 'react'
 
 export type MenuItem = {
   label: string
