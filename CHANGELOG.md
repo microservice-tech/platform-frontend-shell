@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/microservice-tech/platform-frontend-shell/compare/v1.1.0...v1.2.0) (2026-01-16)
+
+
+### Features
+
+* trigger CI on semver tag push for Docker tagging ([9a0c7fd](https://github.com/microservice-tech/platform-frontend-shell/commit/9a0c7fdc959b2f9e3cde1f5136952562a4496031))
+
 # [1.1.0](https://github.com/microservice-tech/platform-frontend-shell/compare/v1.0.1...v1.1.0) (2026-01-16)
 
 
