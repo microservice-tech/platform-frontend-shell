@@ -50,8 +50,9 @@ jobs:
           fi
           # Extract base version (strip any existing build number)
           BASE_VERSION=$(echo "$LATEST_TAG" | sed 's/-[0-9]*$//')
-          # Append build number for uniqueness
-          echo "version=${BASE_VERSION}-${{ github.run_number }}" >> $GITHUB_OUTPUT
+          # Append zero-padded build number for proper alphabetical sorting
+          BUILD_NUM=$(printf "%04d" ${{ github.run_number }})
+          echo "version=${BASE_VERSION}-${BUILD_NUM}" >> $GITHUB_OUTPUT
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
