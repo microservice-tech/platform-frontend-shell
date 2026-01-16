@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   useCallback,
+  useRef,
   type ReactNode,
 } from 'react'
 import Keycloak from 'keycloak-js'
@@ -30,9 +31,19 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // Store callbacks in refs to avoid dependency issues
+  const onAuthSuccessRef = useRef(onAuthSuccess)
+  const onAuthErrorRef = useRef(onAuthError)
+
+  useEffect(() => {
+    onAuthSuccessRef.current = onAuthSuccess
+    onAuthErrorRef.current = onAuthError
+  }, [onAuthSuccess, onAuthError])
+
   useEffect(() => {
     if (!keycloakConfig.url || !keycloakConfig.realm || !keycloakConfig.clientId) {
-      setLoading(false)
+      // Use queueMicrotask to avoid sync setState in effect
+      queueMicrotask(() => setLoading(false))
       return
     }
 
@@ -59,14 +70,14 @@ export function AuthProvider({
             roles: kc.tokenParsed.realm_access?.roles,
           }
           setUser(userData)
-          onAuthSuccess?.(kc.token || '')
+          onAuthSuccessRef.current?.(kc.token || '')
         }
 
         setLoading(false)
       })
       .catch((err) => {
         console.error('Keycloak init failed:', err)
-        onAuthError?.(err)
+        onAuthErrorRef.current?.(err)
         setLoading(false)
       })
 
@@ -74,7 +85,7 @@ export function AuthProvider({
       kc.updateToken(30)
         .then((refreshed) => {
           if (refreshed && kc.token) {
-            onAuthSuccess?.(kc.token)
+            onAuthSuccessRef.current?.(kc.token)
           }
         })
         .catch(() => {
@@ -109,6 +120,7 @@ export function AuthProvider({
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext)
   if (!context) {

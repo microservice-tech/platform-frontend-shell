@@ -125,7 +125,9 @@ export function NotificationProvider({
   }, [websocketUrl, token, authenticated, store, reconnectInterval, maxReconnectAttempts])
 
   // Keep connectRef in sync with connect
-  connectRef.current = connect
+  useEffect(() => {
+    connectRef.current = connect
+  }, [connect])
 
   const disconnect = useCallback(() => {
     if (reconnectTimeoutRef.current) {

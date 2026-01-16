@@ -95,6 +95,7 @@ export function CapabilityProvider({
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCapabilities(): CapabilityContextType {
   const context = useContext(CapabilityContext)
   if (!context) {
