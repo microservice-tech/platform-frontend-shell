@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/microservice-tech/platform-frontend-shell/compare/v1.0.1...v1.1.0) (2026-01-16)
+
+
+### Features
+
+* Add Dockerfile and Docker build pipeline ([09e232a](https://github.com/microservice-tech/platform-frontend-shell/commit/09e232a250e71b13e1a0079438e644a59b848336))
+
 ## [1.0.1](https://github.com/microservice-tech/platform-frontend-shell/compare/v1.0.0...v1.0.1) (2026-01-16)
 
 
