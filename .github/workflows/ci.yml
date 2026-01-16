@@ -59,11 +59,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
+      - name: Build for preview
+        run: npm run build
 
       - name: Run Playwright tests
         run: npm run test
