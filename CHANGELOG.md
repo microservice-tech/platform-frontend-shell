@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/microservice-tech/platform-frontend-shell/compare/v1.0.0...v1.0.1) (2026-01-16)
+
+
+### Bug Fixes
+
+* Add issues and pull-requests write permissions for semantic-release ([2d0df98](https://github.com/microservice-tech/platform-frontend-shell/commit/2d0df98b8a6e26533ffabd154f81313bd9bcab6c))
+
 # 1.0.0 (2026-01-16)
 
 
