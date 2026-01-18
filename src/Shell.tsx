@@ -86,7 +86,7 @@ function ModuleRoutes({
 
     // Wrap each protected route with ProtectedLayout
     const wrappedProtectedRoutes = protectedRouteConfigs.map(route => {
-      const { Component: RouteComponent, element: routeElement, ...rest } = route as any
+      const { Component: RouteComponent, element: routeElement, ...rest } = route as RouteObject & { Component?: React.ComponentType; element?: React.ReactNode }
 
       // Create a wrapper component that will be instantiated by React Router
       const WrapperComponent = () => (
@@ -111,7 +111,7 @@ function ModuleRoutes({
 
     // Wrap each public route with PublicLayout
     const wrappedPublicRoutes = (publicRoutes || []).map(route => {
-      const { Component: RouteComponent, element: routeElement, ...rest } = route as any
+      const { Component: RouteComponent, element: routeElement, ...rest } = route as RouteObject & { Component?: React.ComponentType; element?: React.ReactNode }
 
       const WrapperComponent = () => (
         <PublicLayout
