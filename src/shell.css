@@ -1,42 +1,106 @@
-/* Shell CSS - Modern, clean design */
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* CSS Variables for theming */
+/* shadcn/ui CSS Variables - MUCH higher contrast for visibility */
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 18%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 18%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 100% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 22%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 22%;
+    --muted-foreground: 215 20% 70%;
+    --accent: 217 33% 22%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 33% 30%;
+    --input: 217 33% 22%;
+    --ring: 210 100% 60%;
+    --radius: 0.5rem;
+  }
+}
+
+/* Shell CSS - Dark theme inspired by Onyxia Datalab */
+
+/* CSS Variables for theming - Refined Dark Mode */
 :root {
-  --shell-primary: #2563eb;
-  --shell-primary-hover: #1d4ed8;
-  --shell-bg: #f8fafc;
-  --shell-surface: #ffffff;
-  --shell-text: #1e293b;
-  --shell-text-muted: #64748b;
-  --shell-border: #e2e8f0;
-  --shell-sidebar-width: 240px;
-  --shell-sidebar-collapsed-width: 64px;
+  --shell-primary: #2196F3;
+  --shell-primary-hover: #1976D2;
+  --shell-bg: linear-gradient(135deg, #0a1525 0%, #0f1f35 50%, #132838 100%);
+  --shell-bg-solid: #0a1525;
+  --shell-surface: #0a1929;
+  --shell-surface-elevated: rgba(255, 255, 255, 0.03);
+  --shell-text: #ffffff;
+  --shell-text-secondary: #b0bec5;
+  --shell-text-muted: #78909c;
+  --shell-border: rgba(255, 255, 255, 0.08);
+  --shell-sidebar-width: 180px;
+  --shell-sidebar-collapsed-width: 56px;
   --shell-header-height: 56px;
-  --shell-radius: 8px;
-  --shell-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shell-footer-height: 40px;
+  --shell-radius: 6px;
+  --shell-radius-sm: 4px;
+  --shell-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shell-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Typography */
+  --shell-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --shell-font-size-xs: 11px;
+  --shell-font-size-sm: 13px;
+  --shell-font-size-base: 14px;
+  --shell-font-size-lg: 16px;
+  --shell-font-size-xl: 18px;
 }
 
 /* Base Layout */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--shell-font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .shell-layout {
   min-height: 100vh;
   background: var(--shell-bg);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--shell-font-family);
 }
 
 .shell-layout-loading {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+  background: var(--shell-bg);
 }
 
-.shell-layout-protected {
+.shell-layout-protected,
+.shell-layout-public {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--shell-bg);
 }
 
 .shell-layout-body {
   display: flex;
   flex: 1;
   margin-top: var(--shell-header-height);
+  min-height: calc(100vh - var(--shell-header-height) - var(--shell-footer-height));
 }
 
 /* Header */
@@ -47,11 +111,12 @@
   right: 0;
   height: var(--shell-header-height);
   background: var(--shell-surface);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--shell-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   z-index: 100;
 }
 
@@ -64,19 +129,65 @@
 .shell-header-logo {
   display: flex;
   align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.shell-header-logo:hover {
+  opacity: 0.8;
+}
+
+.shell-header-logo svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .shell-header-title {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: var(--shell-font-size-lg);
+  font-weight: 400;
   color: var(--shell-text);
   margin: 0;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
 }
 
 .shell-header-right {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.shell-header-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shell-header-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--shell-font-size-sm);
+  color: var(--shell-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 400;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.shell-header-link:hover {
+  color: var(--shell-text);
+}
+
+.shell-header-link-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .shell-header-user {
@@ -86,28 +197,34 @@
 }
 
 .shell-header-user-name {
-  font-size: 14px;
-  color: var(--shell-text);
+  font-size: var(--shell-font-size-sm);
+  color: var(--shell-text-secondary);
+  font-weight: 400;
 }
 
 .shell-header-login-btn,
 .shell-header-logout-btn {
-  padding: 8px 16px;
-  border-radius: var(--shell-radius);
-  font-size: 14px;
-  font-weight: 500;
+  padding: 7px 18px;
+  border-radius: var(--shell-radius-sm);
+  font-size: var(--shell-font-size-sm);
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--shell-font-family);
+  letter-spacing: 0.01em;
 }
 
 .shell-header-login-btn {
-  background: var(--shell-primary);
-  color: white;
-  border: none;
+  background: transparent;
+  color: var(--shell-primary);
+  border: 1px solid var(--shell-primary);
 }
 
 .shell-header-login-btn:hover {
-  background: var(--shell-primary-hover);
+  background: var(--shell-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 
 .shell-header-logout-btn {
@@ -118,7 +235,132 @@
 
 .shell-header-logout-btn:hover {
   color: var(--shell-text);
-  border-color: var(--shell-text-muted);
+  border-color: var(--shell-text-secondary);
+  background: var(--shell-surface-elevated);
+}
+
+/* Avatar Menu */
+.shell-avatar-menu {
+  position: relative;
+}
+
+.shell-avatar-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--shell-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--shell-text);
+  font-family: var(--shell-font-family);
+  font-size: var(--shell-font-size-sm);
+}
+
+.shell-avatar-button:hover {
+  background: var(--shell-surface-elevated);
+}
+
+.shell-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--shell-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.shell-avatar-name {
+  font-size: var(--shell-font-size-sm);
+  color: var(--shell-text-secondary);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shell-avatar-chevron {
+  color: var(--shell-text-muted);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.shell-avatar-chevron.open {
+  transform: rotate(180deg);
+}
+
+.shell-avatar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  background: var(--shell-surface);
+  border: 1px solid var(--shell-border);
+  border-radius: var(--shell-radius);
+  box-shadow: var(--shell-shadow-lg);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.shell-avatar-dropdown-section {
+  padding: 8px;
+}
+
+.shell-avatar-dropdown-user {
+  padding: 8px 12px;
+}
+
+.shell-avatar-dropdown-name {
+  font-size: var(--shell-font-size-sm);
+  font-weight: 500;
+  color: var(--shell-text);
+  margin-bottom: 4px;
+}
+
+.shell-avatar-dropdown-email {
+  font-size: var(--shell-font-size-xs);
+  color: var(--shell-text-muted);
+}
+
+.shell-avatar-dropdown-divider {
+  height: 1px;
+  background: var(--shell-border);
+  margin: 4px 0;
+}
+
+.shell-avatar-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: var(--shell-radius-sm);
+  cursor: pointer;
+  font-family: var(--shell-font-family);
+  font-size: var(--shell-font-size-sm);
+  color: var(--shell-text-secondary);
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.shell-avatar-dropdown-item:hover {
+  background: var(--shell-surface-elevated);
+  color: var(--shell-text);
+}
+
+.shell-avatar-dropdown-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* Sidebar */
@@ -126,7 +368,7 @@
   position: fixed;
   top: var(--shell-header-height);
   left: 0;
-  bottom: 0;
+  bottom: var(--shell-footer-height);
   width: var(--shell-sidebar-width);
   background: var(--shell-surface);
   border-right: 1px solid var(--shell-border);
@@ -225,6 +467,7 @@
   flex: 1;
   margin-left: var(--shell-sidebar-width);
   padding: 24px;
+  padding-bottom: calc(var(--shell-footer-height) + 24px);
   transition: margin-left 0.2s;
 }
 
@@ -236,6 +479,66 @@
 .shell-layout-public .shell-main {
   margin-left: 0;
   margin-top: var(--shell-header-height);
+  padding-bottom: calc(var(--shell-footer-height) + 24px);
+}
+
+/* Footer */
+.shell-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--shell-bg-solid);
+  border-top: 1px solid var(--shell-border);
+  padding: 10px 20px;
+  height: var(--shell-footer-height);
+  display: flex;
+  align-items: center;
+  z-index: 90;
+}
+
+.shell-footer-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.shell-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shell-footer-link {
+  font-size: var(--shell-font-size-xs);
+  color: var(--shell-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 400;
+}
+
+.shell-footer-link:hover {
+  color: var(--shell-text-secondary);
+}
+
+.shell-footer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--shell-font-size-xs);
+  color: var(--shell-text-muted);
+  font-weight: 400;
+}
+
+.shell-footer-separator {
+  color: var(--shell-border);
+}
+
+.shell-footer-version {
+  font-size: var(--shell-font-size-xs);
+  color: var(--shell-text-muted);
 }
 
 /* Notification Bell */

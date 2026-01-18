@@ -141,7 +141,7 @@ export function NotificationProvider({
 
   useEffect(() => {
     if (authenticated && token && websocketUrl) {
-      connect()
+      connectRef.current?.()
     } else {
       disconnect()
     }
@@ -149,7 +149,8 @@ export function NotificationProvider({
     return () => {
       disconnect()
     }
-  }, [authenticated, token, websocketUrl, connect, disconnect])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authenticated, token, websocketUrl])
 
   const unreadCount = store.notifications.filter((n) => !n.read).length
 

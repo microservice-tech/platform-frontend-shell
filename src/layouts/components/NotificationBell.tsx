@@ -99,17 +99,12 @@ export function NotificationBell() {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          fill="currentColor"
         >
-          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+          <path d="M12 2C11.172 2 10.5 2.672 10.5 3.5C10.5 3.776 10.572 4.034 10.697 4.26C8.182 5.014 6.5 7.318 6.5 10V15L4 17.5V18.5H20V17.5L17.5 15V10C17.5 7.318 15.818 5.014 13.303 4.26C13.428 4.034 13.5 3.776 13.5 3.5C13.5 2.672 12.828 2 12 2ZM10 20C10 21.105 10.895 22 12 22C13.105 22 14 21.105 14 20H10Z" />
         </svg>
         {unreadCount > 0 && (
           <span className="shell-notification-bell-badge">

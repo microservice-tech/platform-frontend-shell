@@ -5,6 +5,9 @@ export type User = {
   email: string
   name: string
   roles?: string[]
+  permissions?: string[]
+  tenantId?: string
+  avatar?: string
 }
 
 export type AuthContextType = {
@@ -15,6 +18,11 @@ export type AuthContextType = {
   login: () => void
   logout: () => void
   token: string | undefined
+  hasRole: (role: string) => boolean
+  hasPermission: (permission: string) => boolean
+  hasAnyRole: (roles: string[]) => boolean
+  hasAllRoles: (roles: string[]) => boolean
+  getAccountUrl: () => string
 }
 
 export type KeycloakConfig = {
