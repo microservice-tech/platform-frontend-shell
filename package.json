@@ -1,7 +1,13 @@
 {
-  "name": "@platform/frontend-shell",
-  "private": true,
+  "name": "@microservice-tech/platform-frontend-shell",
   "version": "1.2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microservice-tech/platform-frontend-shell.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "type": "module",
   "main": "./dist/frontend-shell.umd.cjs",
   "module": "./dist/frontend-shell.js",

@@ -145,6 +145,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: write
+      packages: write
 
     steps:
       - name: Checkout
@@ -158,6 +159,18 @@ jobs:
           name: dist
           path: dist/
 
+      - name: Setup Node.js for publishing
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@microservice-tech'
+
+      - name: Publish to GitHub Packages
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -167,6 +180,7 @@ jobs:
             ## Frontend Shell ${{ needs.build.outputs.version }}
 
             Docker image: `ghcr.io/${{ github.repository }}:${{ needs.build.outputs.version }}`
+            NPM package: `@microservice-tech/platform-frontend-shell@${{ needs.build.outputs.version }}`
 
             ### Changes
             - See commit history for details
