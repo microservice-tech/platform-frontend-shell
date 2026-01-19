@@ -166,6 +166,13 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@microservice-tech'
 
+      - name: Update package.json version with build suffix
+        run: |
+          # Extract version without 'v' prefix
+          VERSION="${{ needs.build.outputs.version }}"
+          VERSION="${VERSION#v}"
+          npm version $VERSION --no-git-tag-version
+
       - name: Publish to GitHub Packages
         run: npm publish
         env:
