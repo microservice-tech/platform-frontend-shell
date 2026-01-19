@@ -71,73 +71,13 @@ function ModuleRoutes({
   }, [modules])
 
   const router = useMemo(() => {
-    const protectedRouteConfigs: RouteObject[] = enabledModules.flatMap(
+    const protectedRoutes: RouteObject[] = enabledModules.flatMap(
       (module) => module.routes
     )
 
-    // Default 404 page
-    const NotFoundPage = (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h1>404 - Page Not Found</h1>
-        <p>The page you're looking for doesn't exist.</p>
-        <a href="/" style={{ color: '#3b82f6', textDecoration: 'underline' }}>Go to Home</a>
-      </div>
-    )
-
-    // Wrap each protected route with ProtectedLayout
-    const wrappedProtectedRoutes = protectedRouteConfigs.map(route => {
-      const { Component: RouteComponent, element: routeElement, ...rest } = route as RouteObject & { Component?: React.ComponentType; element?: React.ReactNode }
-
-      // Create a wrapper component that will be instantiated by React Router
-      const WrapperComponent = () => (
-        <ProtectedLayout
-          modules={modules}
-          title={title}
-          logo={logo}
-          headerLinks={headerLinks}
-          footerLinks={footerLinks}
-          language={language}
-          version={version}
-        >
-          {RouteComponent ? <RouteComponent /> : routeElement}
-        </ProtectedLayout>
-      )
-
-      return {
-        ...rest,
-        Component: WrapperComponent,
-      }
-    })
-
-    // Wrap each public route with PublicLayout
-    const wrappedPublicRoutes = (publicRoutes || []).map(route => {
-      const { Component: RouteComponent, element: routeElement, ...rest } = route as RouteObject & { Component?: React.ComponentType; element?: React.ReactNode }
-
-      const WrapperComponent = () => (
-        <PublicLayout
-          title={title}
-          logo={logo}
-          headerLinks={headerLinks}
-          footerLinks={footerLinks}
-          language={language}
-          version={version}
-        >
-          {RouteComponent ? <RouteComponent /> : routeElement}
-        </PublicLayout>
-      )
-
-      return {
-        ...rest,
-        Component: WrapperComponent,
-      }
-    })
-
     return createBrowserRouter([
-      ...wrappedProtectedRoutes,
-      ...wrappedPublicRoutes,
-      // Catch-all 404
       {
-        path: '*',
+        path: '/',
         element: (
           <PublicLayout
             title={title}
@@ -146,10 +86,24 @@ function ModuleRoutes({
             footerLinks={footerLinks}
             language={language}
             version={version}
-          >
-            {NotFoundPage}
-          </PublicLayout>
+          />
         ),
+        children: publicRoutes || [],
+      },
+      {
+        path: '/app',
+        element: (
+          <ProtectedLayout
+            modules={modules}
+            title={title}
+            logo={logo}
+            headerLinks={headerLinks}
+            footerLinks={footerLinks}
+            language={language}
+            version={version}
+          />
+        ),
+        children: protectedRoutes,
       },
     ])
   }, [enabledModules, publicRoutes, modules, title, logo, headerLinks, footerLinks, language, version])

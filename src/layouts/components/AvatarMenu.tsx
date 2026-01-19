@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 
 export function AvatarMenu() {
   const { user, logout, getAccountUrl } = useAuth()
-  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -21,11 +20,6 @@ export function AvatarMenu() {
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isOpen])
-
-  const handleSettings = () => {
-    setIsOpen(false)
-    navigate('/settings')
-  }
 
   const handleAccount = () => {
     const accountUrl = getAccountUrl()
@@ -83,10 +77,10 @@ export function AvatarMenu() {
       {isOpen && (
         <div className="shell-avatar-dropdown">
           <div className="shell-avatar-dropdown-section">
-            <button
-              type="button"
+            <Link
+              to="/settings"
               className="shell-avatar-dropdown-item"
-              onClick={handleSettings}
+              onClick={() => setIsOpen(false)}
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -105,7 +99,7 @@ export function AvatarMenu() {
                 />
               </svg>
               Settings
-            </button>
+            </Link>
 
             <button
               type="button"
