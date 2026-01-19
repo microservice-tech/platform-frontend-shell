@@ -12,7 +12,6 @@ type ProtectedLayoutProps = {
   modules: FeatureModule[]
   title?: string
   logo?: React.ReactNode
-  loginPath?: string
   headerLinks?: HeaderLink[]
   footerLinks?: FooterLink[]
   language?: string
@@ -24,7 +23,6 @@ export function ProtectedLayout({
   modules,
   title,
   logo,
-  loginPath = '/',
   headerLinks,
   footerLinks,
   language,
