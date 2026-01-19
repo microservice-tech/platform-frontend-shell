@@ -75,23 +75,12 @@ function ModuleRoutes({
       (module) => module.routes
     )
 
-    return createBrowserRouter([
-      {
-        path: '/',
-        element: (
-          <PublicLayout
-            title={title}
-            logo={logo}
-            headerLinks={headerLinks}
-            footerLinks={footerLinks}
-            language={language}
-            version={version}
-          />
-        ),
-        children: publicRoutes || [],
-      },
-      {
-        path: '/app',
+    // Wrap protected routes with ProtectedLayout
+    const wrappedProtectedRoutes: RouteObject[] = protectedRoutes.map(route => {
+      const { Component: RouteComponent, element: routeElement, ...rest } = route as RouteObject & { Component?: React.ComponentType; element?: React.ReactNode }
+
+      return {
+        ...rest,
         element: (
           <ProtectedLayout
             modules={modules}
@@ -101,10 +90,37 @@ function ModuleRoutes({
             footerLinks={footerLinks}
             language={language}
             version={version}
-          />
+          >
+            {RouteComponent ? <RouteComponent /> : routeElement}
+          </ProtectedLayout>
         ),
-        children: protectedRoutes,
-      },
+      }
+    })
+
+    // Wrap public routes with PublicLayout
+    const wrappedPublicRoutes: RouteObject[] = (publicRoutes || []).map(route => {
+      const { Component: RouteComponent, element: routeElement, ...rest } = route as RouteObject & { Component?: React.ComponentType; element?: React.ReactNode }
+
+      return {
+        ...rest,
+        element: (
+          <PublicLayout
+            title={title}
+            logo={logo}
+            headerLinks={headerLinks}
+            footerLinks={footerLinks}
+            language={language}
+            version={version}
+          >
+            {RouteComponent ? <RouteComponent /> : routeElement}
+          </PublicLayout>
+        ),
+      }
+    })
+
+    return createBrowserRouter([
+      ...wrappedProtectedRoutes,
+      ...wrappedPublicRoutes,
     ])
   }, [enabledModules, publicRoutes, modules, title, logo, headerLinks, footerLinks, language, version])
 
