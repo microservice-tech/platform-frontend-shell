@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useCapabilities } from '../contexts/CapabilityContext'
 import { Header, type HeaderLink } from './components/Header'
@@ -31,7 +31,7 @@ export function ProtectedLayout({
   version,
   children,
 }: ProtectedLayoutProps) {
-  const { authenticated, loading: authLoading } = useAuth()
+  const { authenticated, loading: authLoading, login } = useAuth()
   const { loading: capLoading, hasModule } = useCapabilities()
 
   // Initialize sidebar state from localStorage
@@ -44,6 +44,13 @@ export function ProtectedLayout({
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', JSON.stringify(sidebarCollapsed))
   }, [sidebarCollapsed])
+
+  // Trigger login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !capLoading && !authenticated) {
+      login()
+    }
+  }, [authenticated, authLoading, capLoading, login])
 
   const enabledModules = useMemo(() => {
     return modules.filter((module) =>
@@ -60,7 +67,11 @@ export function ProtectedLayout({
   }
 
   if (!authenticated) {
-    return <Navigate to={loginPath} replace />
+    return (
+      <div className="shell-layout shell-layout-loading">
+        <Spinner size="lg" message="Redirecting to login..." />
+      </div>
+    )
   }
 
   return (
