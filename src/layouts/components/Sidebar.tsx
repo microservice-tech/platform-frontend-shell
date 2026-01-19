@@ -16,7 +16,7 @@ function MenuItemLink({ item, collapsed }: { item: MenuItem; collapsed?: boolean
     (cap) => hasModule(cap) || hasFeature(cap)
   )
 
-  if (!hasAccess) {
+  if (!hasAccess || !item.path) {
     return null
   }
 
@@ -54,7 +54,7 @@ export function Sidebar({ modules, collapsed = false, onToggle }: SidebarProps) 
             )}
             <ul className="shell-sidebar-menu">
               {module.menuItems.map((item) => (
-                <li key={item.path}>
+                <li key={item.path || item.label}>
                   <MenuItemLink item={item} collapsed={collapsed} />
                 </li>
               ))}

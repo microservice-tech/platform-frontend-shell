@@ -3,9 +3,10 @@ import type { ComponentType } from 'react'
 
 export type MenuItem = {
   label: string
-  path: string
+  path?: string
   icon?: ComponentType<{ className?: string }>
   requiredCapabilities?: string[]
+  children?: MenuItem[]
 }
 
 export type FeatureModule = {

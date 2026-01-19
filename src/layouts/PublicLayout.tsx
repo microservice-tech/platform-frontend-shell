@@ -34,7 +34,9 @@ export function PublicLayout({
         />
       )}
       <main className="shell-main">
-        {children || <Outlet />}
+        <div className="shell-content-container">
+          {children || <Outlet />}
+        </div>
       </main>
       <Footer links={footerLinks} language={language} version={version} />
     </div>
