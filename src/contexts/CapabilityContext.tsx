@@ -35,7 +35,14 @@ async function fetchCapabilities(
     throw new Error(`Failed to fetch capabilities: ${response.statusText}`)
   }
 
-  return response.json()
+  const data = await response.json()
+
+  // Transform snake_case API response to camelCase for frontend
+  return {
+    enabledModules: data.enabled_modules || [],
+    enabledFeatures: data.enabled_features || [],
+    limits: data.limits || {},
+  }
 }
 
 export function CapabilityProvider({
@@ -52,7 +59,7 @@ export function CapabilityProvider({
   } = useQuery<CapabilitiesResponse, Error>({
     queryKey: ['capabilities', token],
     queryFn: () => fetchCapabilities(apiBaseUrl, token),
-    enabled: authenticated && !!token && !!apiBaseUrl,
+    enabled: authenticated && !!token && apiBaseUrl !== undefined,
     staleTime: 5 * 60 * 1000,
     retry: 2,
   })

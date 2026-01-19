@@ -71,7 +71,7 @@ export function NotificationProvider({
   const connectRef = useRef<(() => void) | undefined>(undefined)
 
   const connect = useCallback(() => {
-    if (!websocketUrl || !token || !authenticated) {
+    if (websocketUrl === undefined || !token || !authenticated) {
       return
     }
 
