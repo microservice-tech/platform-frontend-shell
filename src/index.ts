@@ -24,6 +24,14 @@ export { Header, Sidebar, NotificationBell, Spinner } from './layouts/components
 // Conditional Rendering Components
 export { RequireRole, RequirePermission, RequireModule, RequireFeature } from './components'
 
+// Subscription & Upgrade Components
+export { UpgradePrompt } from './components/UpgradePrompt'
+export { NoSubscriptionState } from './components/NoSubscriptionState'
+
+// Pages
+export { Pricing } from './pages/pricing'
+export { CheckoutSuccess } from './pages/CheckoutSuccess'
+
 // shadcn UI Components
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './components/ui/card'
 export { Button, buttonVariants } from './components/ui/button'
@@ -32,6 +40,7 @@ export { Label } from './components/ui/label'
 export { Separator } from './components/ui/separator'
 export { Badge, badgeVariants } from './components/ui/badge'
 export { Avatar, avatarVariants } from './components/ui/avatar'
+export { Alert, AlertDescription, AlertTitle } from './components/ui/alert'
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './components/ui/collapsible'
 export {
   Sidebar as ShadcnSidebar,

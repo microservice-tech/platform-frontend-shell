@@ -1,11 +1,14 @@
 import type { ReactNode } from 'react'
 import { useCapabilities } from '../contexts/CapabilityContext'
+import { UpgradePrompt } from './UpgradePrompt'
 
 type RequireFeatureProps = {
   feature: string | string[]
   requireAll?: boolean
   fallback?: ReactNode
   paymentRequiredMessage?: string
+  showUpgradePrompt?: boolean
+  upgradePromptVariant?: 'card' | 'inline' | 'banner'
   children: ReactNode
 }
 
@@ -14,6 +17,8 @@ export function RequireFeature({
   requireAll = false,
   fallback = null,
   paymentRequiredMessage,
+  showUpgradePrompt = true,
+  upgradePromptVariant = 'inline',
   children,
 }: RequireFeatureProps) {
   const { hasFeature } = useCapabilities()
@@ -23,17 +28,28 @@ export function RequireFeature({
     ? features.every(hasFeature)
     : features.some(hasFeature)
 
-  if (!hasAccess && paymentRequiredMessage) {
-    return (
-      <div className="upgrade-required">
-        <h3>Feature Not Available</h3>
-        <p>{paymentRequiredMessage}</p>
-        <button type="button" className="btn-primary">
-          Upgrade Plan
-        </button>
-      </div>
-    )
+  if (!hasAccess) {
+    // If custom fallback is provided, use it
+    if (fallback !== null) {
+      return <>{fallback}</>
+    }
+
+    // Show upgrade prompt if enabled
+    if (showUpgradePrompt) {
+      const featureName = Array.isArray(feature) ? feature.join(', ') : feature
+      return (
+        <UpgradePrompt
+          title="Feature Not Available"
+          message={paymentRequiredMessage || `This feature requires ${featureName}. Upgrade your plan to access it.`}
+          featureName={featureName}
+          variant={upgradePromptVariant}
+        />
+      )
+    }
+
+    // Default: hide the content
+    return null
   }
 
-  return hasAccess ? <>{children}</> : <>{fallback}</>
+  return <>{children}</>
 }
